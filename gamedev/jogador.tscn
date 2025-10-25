@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dphowebggngpm"]
+
+[ext_resource type="Script" uid="uid://cwsisl6tm7t16" path="res://jogador.gd" id="1_fwo5d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vsai"]
+size = Vector2(50, 49.75)
+
+[node name="Jogador" type="Node2D"]
+
+[node name="Movimento" type="CharacterBody2D" parent="."]
+script = ExtResource("1_fwo5d")
+
+[node name="Visual" type="Sprite2D" parent="Movimento"]
+
+[node name="Cor" type="ColorRect" parent="Movimento/Visual"]
+offset_right = 50.0
+offset_bottom = 50.0
+color = Color(0.188235, 1, 1, 1)
+
+[node name="Colisao" type="CollisionShape2D" parent="Movimento"]
+position = Vector2(25, 25.125)
+shape = SubResource("RectangleShape2D_2vsai")
