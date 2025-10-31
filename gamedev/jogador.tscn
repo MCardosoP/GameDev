@@ -1,22 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://dphowebggngpm"]
+[gd_scene load_steps=5 format=3 uid="uid://bk8nern1lwthh"]
 
-[ext_resource type="Script" uid="uid://cwsisl6tm7t16" path="res://jogador.gd" id="1_fwo5d"]
+[ext_resource type="Script" uid="uid://dv2k8y5ptp25w" path="res://jogador.gd" id="1_yuxfx"]
+[ext_resource type="PackedScene" uid="uid://c0f314ms0pdlm" path="res://projetil.tscn" id="2_c2wt1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vsai"]
-size = Vector2(50, 49.75)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2wt1"]
+size = Vector2(32, 32)
 
-[node name="Jogador" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_yuxfx"]
+radius = 48.0
 
-[node name="Movimento" type="CharacterBody2D" parent="."]
-script = ExtResource("1_fwo5d")
+[node name="Jogador" type="CharacterBody2D"]
+script = ExtResource("1_yuxfx")
+cena_projetil = ExtResource("2_c2wt1")
 
-[node name="Visual" type="Sprite2D" parent="Movimento"]
+[node name="Colisao" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_c2wt1")
 
-[node name="Cor" type="ColorRect" parent="Movimento/Visual"]
-offset_right = 50.0
-offset_bottom = 50.0
-color = Color(0.188235, 1, 1, 1)
+[node name="Sprite" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 0.270588, 0, 1)
 
-[node name="Colisao" type="CollisionShape2D" parent="Movimento"]
-position = Vector2(25, 25.125)
-shape = SubResource("RectangleShape2D_2vsai")
+[node name="AreaAtaque" type="Area2D" parent="."]
+
+[node name="ColisaoAtaque" type="CollisionShape2D" parent="AreaAtaque"]
+shape = SubResource("CircleShape2D_yuxfx")
