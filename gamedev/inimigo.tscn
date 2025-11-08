@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cv58esb4ig052"]
+
+[ext_resource type="Script" uid="uid://kg53tbeqfy4k" path="res://inimigo.gd" id="1_030df"]
+
+[node name="Inimigo" type="CharacterBody2D"]
+script = ExtResource("1_030df")
