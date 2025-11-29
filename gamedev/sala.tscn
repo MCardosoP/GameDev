@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dn3mi4gytfor1"]
+[gd_scene load_steps=2 format=3 uid="uid://dn3mi4gytfor1"]
 
 [ext_resource type="Script" uid="uid://cg3xxbrw15kk1" path="res://sala.gd" id="1_23dcn"]
-[ext_resource type="PackedScene" uid="uid://cv58esb4ig052" path="res://inimigo.tscn" id="2_8p6ll"]
 
 [node name="Sala" type="Node2D"]
 script = ExtResource("1_23dcn")
-cena_inimigo = ExtResource("2_8p6ll")

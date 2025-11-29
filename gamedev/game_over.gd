@@ -68,6 +68,19 @@ func mostrar() -> void:
 	painel.visible = true
 	# Pausa o jogo quando o Game Over aparece
 	get_tree().paused = true
+	
+	# Salva o high score
+	var pontos = GerenciadorOndas.pontuacao
+	var sala = GerenciadorOndas.onda_atual
+	GerenciadorHighscores.adicionar_score(pontos, sala)
+	
+	# Verifica se é novo recorde
+	if GerenciadorHighscores.eh_novo_highscore(pontos):
+		label_titulo.text = "NOVO RECORDE!\nVocê perdeu!"
+		label_titulo.add_theme_color_override("font_color", Color(1, 0.84, 0))  # Dourado
+	else:
+		label_titulo.text = "VOCÊ PERDEU!"
+		label_titulo.add_theme_color_override("font_color", Color(1, 0, 0))  # Vermelho
 
 func _on_botao_reiniciar_pressed() -> void:
 	# Despausa o jogo

@@ -36,13 +36,13 @@ func _ready() -> void:
 	add_child(container_principal)
 	
 	# Título do Jogo
-	label_titulo = Label.new()
-	label_titulo.name = "Titulo"
-	label_titulo.text = "VENATOR NOCTIS"
-	label_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label_titulo.add_theme_font_size_override("font_size", 72)
-	label_titulo.add_theme_color_override("font_color", Color(1, 1, 1))
-	container_principal.add_child(label_titulo)
+	#label_titulo = Label.new()
+	#label_titulo.name = "Titulo"
+	#label_titulo.text = "VENATOR NOCTIS"
+	#label_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#label_titulo.add_theme_font_size_override("font_size", 72)
+	#label_titulo.add_theme_color_override("font_color", Color(1, 1, 1))
+	#container_principal.add_child(label_titulo)
 	
 	# Espaçador
 	var spacer = Control.new()
@@ -62,6 +62,13 @@ func _ready() -> void:
 	container_botoes.add_child(container_jogar)
 	botao_jogar.pressed.connect(_on_botao_jogar_pressed)
 	
+	# Botão Pontuação (era Opções)
+	botao_opcoes = criar_botao("Pontuação")
+	var container_opcoes = CenterContainer.new()
+	container_opcoes.add_child(botao_opcoes)
+	container_botoes.add_child(container_opcoes)
+	botao_opcoes.pressed.connect(_on_botao_pontuacao_pressed)
+	
 	# Botão Sair
 	botao_sair = criar_botao("Sair")
 	var container_sair = CenterContainer.new()
@@ -71,7 +78,7 @@ func _ready() -> void:
 	
 	# Informação de controles no rodapé
 	var label_controles = Label.new()
-	label_controles.text = "Controles: WASD - Mover | Setas - Atirar | Q - Ataque Corpo a Corpo | ESC - Pausar"
+	label_controles.text = "Controles: WASD - Mover | Setas - Atirar | Espaço - Ataque Corpo a Corpo | ESC - Pausar"
 	label_controles.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label_controles.add_theme_font_size_override("font_size", 16)
 	label_controles.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
@@ -89,16 +96,18 @@ func criar_botao(texto: String) -> Button:
 	return botao
 
 func _on_botao_jogar_pressed() -> void:
+	# Reseta o gerenciador de ondas antes de começar
+	GerenciadorOndas.resetar_jogo()
+	
 	# Troca para a cena do jogo
 	if cena_jogo != "":
 		get_tree().change_scene_to_file(cena_jogo)
 	else:
 		print("ERRO: Caminho da cena do jogo não foi definido!")
 
-func _on_botao_opcoes_pressed() -> void:
-	# Por enquanto, apenas mostra uma mensagem
-	print("Opções - A implementar")
-	# Aqui você pode criar uma tela de opções depois
+func _on_botao_pontuacao_pressed() -> void:
+	# Abre a tela de high scores
+	get_tree().change_scene_to_file("res://tela_highscores.tscn")
 
 func _on_botao_sair_pressed() -> void:
 	# Fecha o jogo

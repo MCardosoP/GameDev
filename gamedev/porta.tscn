@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dekn0b0b51xic"]
+
+[ext_resource type="Script" uid="uid://b1sermkuwqvjr" path="res://porta.gd" id="1_5rp3s"]
+
+[node name="Porta" type="Area2D"]
+script = ExtResource("1_5rp3s")

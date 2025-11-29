@@ -12,3 +12,5 @@ Jogo eletrônico (roguelite 2D com visão top-down) desenvolvido com o motor God
 * Sistema de vida e munição do jogador
 * Interface de usuário simples (vida, munição)
 * Interface de menus (menu inicial, menu de pausa, menu de game over)
+
+## Fontes Utilizadas na Implementação

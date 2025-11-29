@@ -18,6 +18,10 @@ func _ready():
 	# Adiciona ao grupo para facilitar busca
 	add_to_group("jogador")
 	
+	# Restaura vida e munição do GerenciadorOndas (persiste entre salas)
+	vida = GerenciadorOndas.obter_vida_jogador()
+	municao = GerenciadorOndas.obter_municao_jogador()
+	
 	# Busca o HUD
 	hud = get_tree().current_scene.get_node_or_null("HUD")
 	if not hud:
@@ -25,6 +29,10 @@ func _ready():
 		var huds = get_tree().get_nodes_in_group("hud")
 		if huds.size() > 0:
 			hud = huds[0]
+	
+	# Atualiza HUD com valores restaurados
+	if hud and hud.has_method("atualizar_hud"):
+		hud.atualizar_hud(vida, municao)
 	
 	# ADICIONANDO COLLISION SHAPE (isso estava faltando!)
 	var colisao = CollisionShape2D.new()
@@ -86,6 +94,10 @@ func atacar_distancia():
 		municao -= 1
 		if hud and hud.has_method("atualizar_hud"):
 			hud.atualizar_hud(vida, municao)
+		
+		# Salva estado no GerenciadorOndas
+		GerenciadorOndas.salvar_estado_jogador(vida, municao)
+		
 		await get_tree().create_timer(espera_ataque).timeout
 		pode_atacar = true
 
@@ -142,6 +154,9 @@ func receber_dano(dano: int):
 	vida -= dano
 	if hud and hud.has_method("atualizar_hud"):
 		hud.atualizar_hud(vida, municao)
+	
+	# Salva estado no GerenciadorOndas
+	GerenciadorOndas.salvar_estado_jogador(vida, municao)
 	
 	# Feedback visual de dano (pisca vermelho)
 	criar_efeito_dano()

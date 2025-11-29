@@ -15,6 +15,11 @@ run/main_scene="uid://dpqucff3f2dmm"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GerenciadorOndas="*res://gerenciador_ondas.gd"
+GerenciadorHighscores="*res://gerenciador_highscores.gd"
+
 [display]
 
 window/size/viewport_width=1920

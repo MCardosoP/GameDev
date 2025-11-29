@@ -9,12 +9,12 @@ extends Node2D
 @export var cena_fantasma: PackedScene
 @export var cena_atirador: PackedScene
 @export var cena_jogador: PackedScene
-@export var quantidade_inimigos: int = 3
-@export var quantidade_fantasmas: int = 2
-@export var quantidade_atiradores: int = 2
+@export var cena_porta: PackedScene
 @export var distancia_minima_jogador: float = 100.0
 
 var jogador: Node = null
+var porta: Node = null
+var inimigos_vivos: int = 0
 
 func _ready() -> void:
 	# Criando o chão e as paredes (o chão vem primeiro para não ficar acima das paredes durante a exibição)
@@ -27,14 +27,24 @@ func _ready() -> void:
 	# Instancia o jogador no centro da sala
 	instanciar_jogador()
 	
-	# Instancia os inimigos em posições aleatórias
-	instanciar_inimigos()
+	# Instancia a porta (fechada inicialmente)
+	instanciar_porta()
 	
-	# Instancia os fantasmas em posições aleatórias
-	instanciar_fantasmas()
+	# Instancia os inimigos baseado na onda atual
+	var config = GerenciadorOndas.get_config_onda_atual()
+	print("=== DEBUG SALA ===")
+	print("Onda atual: ", GerenciadorOndas.onda_atual)
+	print("Config: ", config)
+	print("Inimigos a spawnar: ", config["inimigos"])
+	print("Fantasmas a spawnar: ", config["fantasmas"])
+	print("Atiradores a spawnar: ", config["atiradores"])
 	
-	# Instancia os atiradores em posições aleatórias
-	instanciar_atiradores()
+	instanciar_inimigos(config["inimigos"])
+	instanciar_fantasmas(config["fantasmas"])
+	instanciar_atiradores(config["atiradores"])
+	
+	print("Total de inimigos vivos: ", inimigos_vivos)
+	print("==================")
 
 func criar_chao():
 	# Criando o nó ColorRect, definindo suas características e adicionando como nó filho do nó sala
@@ -85,22 +95,45 @@ func instanciar_jogador():
 	jogador.name = "Jogador"
 	add_child(jogador)
 	
-	# Calcula o centro real da área jogável entre as paredes
-	# Parede Superior está em y = -tamanho_tela.y / 2
-	# Parede Inferior está em y = tamanho_tela.y / 2
-	# Parede Esquerda está em x = -tamanho_tela.x / 2
-	# Parede Direita está em x = tamanho_tela.x / 2
-	
-	# O centro entre as paredes, considerando a grossura
-	var centro_x = 0.0  # Entre -tamanho_tela.x/2 e +tamanho_tela.x/2
-	var centro_y = 0.0  # Entre -tamanho_tela.y/2 e +tamanho_tela.y/2
-	
-	# Como as paredes estão simétricas em relação a (0,0), o centro é (0,0)
-	# Mas isso está em coordenadas locais da sala
-	# Em coordenadas globais, precisamos somar a posição da sala
-	jogador.global_position = global_position + Vector2(centro_x, centro_y)
+	# Posiciona no centro visual da sala
+	jogador.global_position = global_position + Vector2.ZERO
 
-func instanciar_inimigos():
+func instanciar_porta():
+	if not cena_porta:
+		print("ERRO: Cena da porta não foi definida!")
+		return
+	
+	porta = cena_porta.instantiate()
+	porta.name = "Porta"
+	add_child(porta)
+	
+	# Posiciona a porta na parede direita
+	var pos_x = (tamanho_tela.x / 2) - grossura_parede - 50
+	porta.global_position = global_position + Vector2(pos_x, 0)
+	
+	# Conecta sinal da porta
+	porta.jogador_entrou.connect(_on_porta_jogador_entrou)
+
+func _on_porta_jogador_entrou():
+	# Jogador passou pela porta, vai para próxima onda
+	GerenciadorOndas.proxima_onda()
+	get_tree().reload_current_scene()
+
+func inimigo_morreu():
+	# Verifica se a sala ainda existe (evita erro ao voltar ao menu)
+	if not is_inside_tree():
+		return
+	
+	inimigos_vivos -= 1
+	GerenciadorOndas.inimigo_eliminado()
+	GerenciadorOndas.adicionar_pontos(10)  # 10 pontos por inimigo
+	
+	if inimigos_vivos <= 0:
+		# Todos os inimigos foram eliminados, abre a porta
+		if porta and is_instance_valid(porta) and porta.has_method("abrir"):
+			porta.abrir()
+
+func instanciar_inimigos(quantidade: int):
 	if not cena_inimigo:
 		print("ERRO: Cena do inimigo não foi definida!")
 		return
@@ -110,19 +143,13 @@ func instanciar_inimigos():
 		return
 	
 	# Calcula os limites reais da área jogável (dentro das paredes)
-	# Parede Superior: y = -tamanho_tela.y / 2
-	# Parede Inferior: y = tamanho_tela.y / 2
-	# Parede Esquerda: x = -tamanho_tela.x / 2
-	# Parede Direita: x = tamanho_tela.x / 2
-	
-	# Adiciona margem para não spawnar colado nas paredes
 	var margem = grossura_parede + 50
 	var limite_x_min = -tamanho_tela.x / 2 + margem
 	var limite_x_max = tamanho_tela.x / 2 - margem
 	var limite_y_min = -tamanho_tela.y / 2 + margem
 	var limite_y_max = tamanho_tela.y / 2 - margem
 	
-	for i in range(quantidade_inimigos):
+	for i in range(quantidade):
 		var inimigo = cena_inimigo.instantiate()
 		var posicao_valida = false
 		var tentativas = 0
@@ -148,8 +175,12 @@ func instanciar_inimigos():
 		
 		add_child(inimigo)
 		inimigo.global_position = global_position + posicao_inimigo
+		inimigos_vivos += 1
+		
+		# Conecta sinal de morte
+		inimigo.tree_exited.connect(inimigo_morreu)
 
-func instanciar_fantasmas():
+func instanciar_fantasmas(quantidade: int):
 	if not cena_fantasma:
 		print("AVISO: Cena do fantasma não foi definida!")
 		return
@@ -165,7 +196,7 @@ func instanciar_fantasmas():
 	var limite_y_min = -tamanho_tela.y / 2 + margem
 	var limite_y_max = tamanho_tela.y / 2 - margem
 	
-	for i in range(quantidade_fantasmas):
+	for i in range(quantidade):
 		var fantasma = cena_fantasma.instantiate()
 		var posicao_valida = false
 		var tentativas = 0
@@ -191,8 +222,12 @@ func instanciar_fantasmas():
 		
 		add_child(fantasma)
 		fantasma.global_position = global_position + posicao_fantasma
+		inimigos_vivos += 1
+		
+		# Conecta sinal de morte
+		fantasma.tree_exited.connect(inimigo_morreu)
 
-func instanciar_atiradores():
+func instanciar_atiradores(quantidade: int):
 	if not cena_atirador:
 		print("AVISO: Cena do atirador não foi definida!")
 		return
@@ -208,7 +243,7 @@ func instanciar_atiradores():
 	var limite_y_min = -tamanho_tela.y / 2 + margem
 	var limite_y_max = tamanho_tela.y / 2 - margem
 	
-	for i in range(quantidade_atiradores):
+	for i in range(quantidade):
 		var atirador = cena_atirador.instantiate()
 		var posicao_valida = false
 		var tentativas = 0
@@ -234,3 +269,7 @@ func instanciar_atiradores():
 		
 		add_child(atirador)
 		atirador.global_position = global_position + posicao_atirador
+		inimigos_vivos += 1
+		
+		# Conecta sinal de morte
+		atirador.tree_exited.connect(inimigo_morreu)
