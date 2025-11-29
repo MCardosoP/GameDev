@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwaebxv66a35v"]
+
+[ext_resource type="Script" uid="uid://dmugoeshsn3vv" path="res://fantasma.gd" id="1_gdkjs"]
+
+[node name="Fantasma" type="CharacterBody2D"]
+script = ExtResource("1_gdkjs")

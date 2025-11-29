@@ -1,0 +1,29 @@
+[gd_scene load_steps=8 format=3 uid="uid://de7rltluvh466"]
+
+[ext_resource type="PackedScene" uid="uid://bk8nern1lwthh" path="res://jogador.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://dn3mi4gytfor1" path="res://sala.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bwaebxv66a35v" path="res://fantasma.tscn" id="2_8c340"]
+[ext_resource type="PackedScene" uid="uid://cyrcj1hkg4spy" path="res://atirador.tscn" id="3_45nkh"]
+[ext_resource type="Script" uid="uid://f0887c23gfe0" path="res://hud.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://bhq3cuumcge66" path="res://game_over.gd" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://cpuxj3ge1sikt" path="res://menu_pausa.gd" id="5_lquwl"]
+
+[node name="Jogo" type="Node2D"]
+
+[node name="Sala" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(960, 540)
+cena_fantasma = ExtResource("2_8c340")
+cena_atirador = ExtResource("3_45nkh")
+cena_jogador = ExtResource("1_ig7tw")
+distancia_minima_jogador = 200.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_h2yge")
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("4_1bvp3")
+
+[node name="MenuPausa" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("5_lquwl")

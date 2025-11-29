@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyrcj1hkg4spy"]
+
+[ext_resource type="Script" uid="uid://dbqfxvvwx6td2" path="res://atirador.gd" id="1_5chg7"]
+[ext_resource type="PackedScene" uid="uid://g7x2wne4xuq1" path="res://projetil_inimigo.tscn" id="2_lt7ji"]
+
+[node name="Atirador" type="CharacterBody2D"]
+script = ExtResource("1_5chg7")
+cena_projetil_inimigo = ExtResource("2_lt7ji")

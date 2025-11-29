@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://g7x2wne4xuq1"]
+
+[ext_resource type="Script" uid="uid://dmqr32u0w21ix" path="res://projetil_inimigo.gd" id="1_gqbvf"]
+
+[node name="ProjetilInimigo" type="CharacterBody2D"]
+script = ExtResource("1_gqbvf")
