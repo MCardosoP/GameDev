@@ -4,7 +4,9 @@ extends CharacterBody2D
 @export var espera_ataque: float = 0.4
 @export var cena_projetil: PackedScene
 @export var vida: int = 5
+@export var vida_maxima: int = 10  # Vida máxima do jogador
 @export var municao: int = 100
+@export var municao_maxima: int = 200  # Munição máxima
 @export var tamanho: Vector2 = Vector2(32, 32)
 
 var hud = null
@@ -34,7 +36,6 @@ func _ready():
 	if hud and hud.has_method("atualizar_hud"):
 		hud.atualizar_hud(vida, municao)
 	
-	# ADICIONANDO COLLISION SHAPE (isso estava faltando!)
 	var colisao = CollisionShape2D.new()
 	var forma = RectangleShape2D.new()
 	forma.size = tamanho
@@ -186,3 +187,27 @@ func criar_efeito_dano():
 			if is_instance_valid(corpo_visual):
 				corpo_visual.color = cor_original
 		)
+
+func adicionar_vida(quantidade: int):
+	vida += quantidade
+	if vida > vida_maxima:
+		vida = vida_maxima
+	
+	# Atualiza HUD e salva estado
+	if hud and hud.has_method("atualizar_hud"):
+		hud.atualizar_hud(vida, municao)
+	GerenciadorOndas.salvar_estado_jogador(vida, municao)
+	
+	print("Vida recuperada! Vida atual: ", vida)
+
+func adicionar_municao(quantidade: int):
+	municao += quantidade
+	if municao > municao_maxima:
+		municao = municao_maxima
+	
+	# Atualiza HUD e salva estado
+	if hud and hud.has_method("atualizar_hud"):
+		hud.atualizar_hud(vida, municao)
+	GerenciadorOndas.salvar_estado_jogador(vida, municao)
+	
+	print("Munição coletada! Munição atual: ", municao)

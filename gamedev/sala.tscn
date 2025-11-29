@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn3mi4gytfor1"]
+[gd_scene load_steps=9 format=3 uid="uid://dn3mi4gytfor1"]
 
 [ext_resource type="Script" uid="uid://cg3xxbrw15kk1" path="res://sala.gd" id="1_23dcn"]
+[ext_resource type="PackedScene" uid="uid://cv58esb4ig052" path="res://inimigo.tscn" id="2_libsc"]
+[ext_resource type="PackedScene" uid="uid://bwaebxv66a35v" path="res://fantasma.tscn" id="3_b0vhe"]
+[ext_resource type="PackedScene" uid="uid://cyrcj1hkg4spy" path="res://atirador.tscn" id="4_8ir1k"]
+[ext_resource type="PackedScene" uid="uid://bk8nern1lwthh" path="res://jogador.tscn" id="5_vi4yk"]
+[ext_resource type="PackedScene" uid="uid://dekn0b0b51xic" path="res://porta.tscn" id="6_cb44k"]
+[ext_resource type="PackedScene" uid="uid://b3r5bq4xkb3qt" path="res://powerup_vida.tscn" id="7_l1guu"]
+[ext_resource type="PackedScene" uid="uid://c2xtexx80ct42" path="res://powerup_municao.tscn" id="8_sej27"]
 
 [node name="Sala" type="Node2D"]
 script = ExtResource("1_23dcn")
+cena_inimigo = ExtResource("2_libsc")
+cena_fantasma = ExtResource("3_b0vhe")
+cena_atirador = ExtResource("4_8ir1k")
+cena_jogador = ExtResource("5_vi4yk")
+cena_porta = ExtResource("6_cb44k")
+cena_powerup_vida = ExtResource("7_l1guu")
+cena_powerup_municao = ExtResource("8_sej27")

@@ -1,24 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://de7rltluvh466"]
+[gd_scene load_steps=5 format=3 uid="uid://de7rltluvh466"]
 
 [ext_resource type="PackedScene" uid="uid://dn3mi4gytfor1" path="res://sala.tscn" id="2_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://cv58esb4ig052" path="res://inimigo.tscn" id="2_t8pok"]
 [ext_resource type="Script" uid="uid://f0887c23gfe0" path="res://hud.gd" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://bwaebxv66a35v" path="res://fantasma.tscn" id="3_mtw28"]
 [ext_resource type="Script" uid="uid://bhq3cuumcge66" path="res://game_over.gd" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cyrcj1hkg4spy" path="res://atirador.tscn" id="4_orj5g"]
-[ext_resource type="PackedScene" uid="uid://bk8nern1lwthh" path="res://jogador.tscn" id="5_01kpq"]
 [ext_resource type="Script" uid="uid://cpuxj3ge1sikt" path="res://menu_pausa.gd" id="5_lquwl"]
-[ext_resource type="PackedScene" uid="uid://dekn0b0b51xic" path="res://porta.tscn" id="6_2ka1p"]
 
 [node name="Jogo" type="Node2D"]
 
 [node name="Sala" parent="." instance=ExtResource("2_0xm2m")]
 position = Vector2(960, 540)
-cena_inimigo = ExtResource("2_t8pok")
-cena_fantasma = ExtResource("3_mtw28")
-cena_atirador = ExtResource("4_orj5g")
-cena_jogador = ExtResource("5_01kpq")
-cena_porta = ExtResource("6_2ka1p")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("3_h2yge")

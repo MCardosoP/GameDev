@@ -10,6 +10,9 @@ extends Node2D
 @export var cena_atirador: PackedScene
 @export var cena_jogador: PackedScene
 @export var cena_porta: PackedScene
+@export var cena_powerup_vida: PackedScene
+@export var cena_powerup_municao: PackedScene
+@export var chance_powerup: float = 0.25  # 25% de chance de dropar power-up
 @export var distancia_minima_jogador: float = 100.0
 
 var jogador: Node = null
@@ -32,19 +35,10 @@ func _ready() -> void:
 	
 	# Instancia os inimigos baseado na onda atual
 	var config = GerenciadorOndas.get_config_onda_atual()
-	print("=== DEBUG SALA ===")
-	print("Onda atual: ", GerenciadorOndas.onda_atual)
-	print("Config: ", config)
-	print("Inimigos a spawnar: ", config["inimigos"])
-	print("Fantasmas a spawnar: ", config["fantasmas"])
-	print("Atiradores a spawnar: ", config["atiradores"])
 	
 	instanciar_inimigos(config["inimigos"])
 	instanciar_fantasmas(config["fantasmas"])
 	instanciar_atiradores(config["atiradores"])
-	
-	print("Total de inimigos vivos: ", inimigos_vivos)
-	print("==================")
 
 func criar_chao():
 	# Criando o nó ColorRect, definindo suas características e adicionando como nó filho do nó sala
@@ -223,8 +217,6 @@ func instanciar_fantasmas(quantidade: int):
 		add_child(fantasma)
 		fantasma.global_position = global_position + posicao_fantasma
 		inimigos_vivos += 1
-		
-		# Conecta sinal de morte
 		fantasma.tree_exited.connect(inimigo_morreu)
 
 func instanciar_atiradores(quantidade: int):
@@ -270,6 +262,27 @@ func instanciar_atiradores(quantidade: int):
 		add_child(atirador)
 		atirador.global_position = global_position + posicao_atirador
 		inimigos_vivos += 1
-		
-		# Conecta sinal de morte
 		atirador.tree_exited.connect(inimigo_morreu)
+
+func inimigo_morreu_com_powerup(posicao: Vector2):
+	# Gera número aleatório
+	var numero_aleatorio = randf()
+	
+	# Chance de spawnar power-up
+	if numero_aleatorio < chance_powerup:
+		spawnar_powerup(posicao)
+
+func spawnar_powerup(posicao: Vector2):
+	
+	# Decide aleatoriamente entre vida e munição (50/50)
+	var eh_vida = randf() > 0.5
+	
+	var powerup = null
+	if eh_vida and cena_powerup_vida:
+		powerup = cena_powerup_vida.instantiate()
+	elif not eh_vida and cena_powerup_municao:
+		powerup = cena_powerup_municao.instantiate()
+	
+	if powerup:
+		add_child(powerup)
+		powerup.global_position = posicao

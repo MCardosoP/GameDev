@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2xtexx80ct42"]
+
+[ext_resource type="Script" uid="uid://bw8dkyhvxtvmc" path="res://powerup_municao.gd" id="1_xxas8"]
+
+[node name="PowerupMunicao" type="Area2D"]
+script = ExtResource("1_xxas8")

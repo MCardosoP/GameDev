@@ -35,15 +35,6 @@ func _ready() -> void:
 	container_principal.add_theme_constant_override("separation", 40)
 	add_child(container_principal)
 	
-	# Título do Jogo
-	#label_titulo = Label.new()
-	#label_titulo.name = "Titulo"
-	#label_titulo.text = "VENATOR NOCTIS"
-	#label_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	#label_titulo.add_theme_font_size_override("font_size", 72)
-	#label_titulo.add_theme_color_override("font_color", Color(1, 1, 1))
-	#container_principal.add_child(label_titulo)
-	
 	# Espaçador
 	var spacer = Control.new()
 	spacer.custom_minimum_size = Vector2(0, 50)

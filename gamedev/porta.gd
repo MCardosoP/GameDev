@@ -37,17 +37,6 @@ func _ready():
 	borda.z_index = -1
 	add_child(borda)
 	
-	# Label com texto
-	label_texto = Label.new()
-	label_texto.text = "TRANCADA"
-	label_texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label_texto.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label_texto.add_theme_font_size_override("font_size", 16)
-	label_texto.add_theme_color_override("font_color", Color(1, 1, 1))
-	label_texto.size = tamanho
-	label_texto.position = -tamanho / 2
-	add_child(label_texto)
-	
 	# Conecta sinal de entrada
 	body_entered.connect(_on_body_entered)
 	
@@ -57,15 +46,12 @@ func _ready():
 func abrir():
 	esta_aberta = true
 	corpo_visual.color = cor_aberta
-	label_texto.text = "PRÓXIMA\nSALA"
 	
-	# Efeito visual de abertura
 	criar_efeito_abertura()
 
 func fechar():
 	esta_aberta = false
 	corpo_visual.color = cor_fechada
-	label_texto.text = "TRANCADA"
 
 func _on_body_entered(body):
 	if esta_aberta and body.is_in_group("jogador"):
