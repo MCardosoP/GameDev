@@ -69,7 +69,7 @@ func _ready() -> void:
 	
 	# Informação de controles no rodapé
 	var label_controles = Label.new()
-	label_controles.text = "Controles: WASD - Mover | Setas - Atirar | Espaço - Ataque Corpo a Corpo | ESC - Pausar"
+	label_controles.text = "Controles: WASD - Mover | Setas - Atirar | Q - Ataque Corpo a Corpo | ESC - Pausar"
 	label_controles.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label_controles.add_theme_font_size_override("font_size", 16)
 	label_controles.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
